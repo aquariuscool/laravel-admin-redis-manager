@@ -172,8 +172,12 @@ class RedisManager extends Extension
     {
         $client = $this->getConnection();
         $keys = [];
+        $prefix = $client->getOptions()->prefix->getPrefix();
 
         foreach (new Keyspace($client->client(), $pattern) as $item) {
+            if (str_starts_with($item, $prefix)) {
+                $item = substr($item, strlen($prefix));
+            }
             $keys[] = $item;
 
             if (count($keys) == $count) {
