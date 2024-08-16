@@ -214,7 +214,7 @@ LUA;
            $key = substr($key, strlen($prefix));
         }
 
-        if (!client->exists($key)) {
+        if (!$client->exists($key)) {
             return [];
         }
 
