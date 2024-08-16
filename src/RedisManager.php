@@ -208,11 +208,17 @@ LUA;
      */
     public function fetch($key)
     {
-        if (!$this->getConnection()->exists($key)) {
+        $client = $this->getConnection();
+        $prefix = $client->getOptions()->prefix->getPrefix();
+        if (str_starts_with($key, $prefix)) {
+           $key = substr($key, strlen($prefix));
+        }
+
+        if (!client->exists($key)) {
             return [];
         }
 
-        $type = $this->getConnection()->type($key)->__toString();
+        $type = $client->type($key)->__toString();
 
         /** @var DataType $class */
         $class = $this->{$type}();
